@@ -1,8 +1,8 @@
 import { relations } from "drizzle-orm";
 import { pgTable, uuid, text, integer, timestamp, boolean, jsonb } from "drizzle-orm/pg-core";
 
-export type userRole = "admin" | "customer" | "support";
-export type orderStatus = "pending" | "paid" | "failed";
+export type UserRole = "admin" | "customer" | "support";
+export type OrderStatus = "pending" | "paid" | "failed";
 
 export type CheckoutSessionLine = {
     productId: string;
@@ -15,7 +15,7 @@ export const users = pgTable("users", {
     email: text("email").notNull().default(""),
     clerkUserId: uuid("clerk_user_id").notNull().unique(),
     fullName: text("full_name").notNull(),
-    role: text("role").$type<userRole>().notNull().default("customer"),
+    role: text("role").$type<UserRole>().notNull().default("customer"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
 })
@@ -37,7 +37,7 @@ export const products = pgTable("products", {
 export const orders = pgTable("orders", {
     id: uuid("id").defaultRandom().primaryKey(),
     userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-    status: text("status").$type<orderStatus>().notNull().default("pending"),
+    status: text("status").$type<OrderStatus>().notNull().default("pending"),
     totalCents: integer("total_cents").notNull().default(0),
     polarCheckoutId: text("polar_checkout_id"),
     polarOrderId: text("polar_order_id").unique(),
