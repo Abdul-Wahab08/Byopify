@@ -2,18 +2,22 @@ import express from "express";
 import cors from "cors";
 import { clerkMiddleware } from '@clerk/express'
 import { clerkWebhooksHandler } from "./webhooks/clerk";
+import loggedInUserRouter from "./routes/me.route";
 
 const app = express();
-app.use(clerkMiddleware());
-const raw = express.raw({type: 'application/json'});
 
-app.use(express.json({limit: "16kb"}));
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+const raw = express.raw({ type: 'application/json' });
 
-app.post('/api/webhooks', raw, (req, res)=>{
+app.post('/webhooks/clerk', raw, (req, res) => {
     clerkWebhooksHandler(req, res);
 })
+
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(clerkMiddleware());
+
+app.use("/api/me", loggedInUserRouter);
 
 const port = process.env.PORT;
 
