@@ -1,8 +1,6 @@
 import { getAuth } from "@clerk/express";
 import { NextFunction, Request, Response, Router } from "express";
-import { db } from "../db";
-import { users } from "../db/schema";
-import { eq } from "drizzle-orm";
+import { getLoggedInUser } from "../lib/user";
 
 const router = Router()
 
@@ -15,11 +13,14 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
             message: "Unauthorized",
         });
 
-        const user = await db
-            .select()
-            .from(users)
-            .where(eq(users.clerkUserId, userId))
-            .limit(1)
+        const user = await getLoggedInUser(userId)
+
+        if (!user) {
+            return res.status(404).json({
+                data: null,
+                message: "User not found",
+            });
+        }
 
         return res.status(200).json({
             data: user,
