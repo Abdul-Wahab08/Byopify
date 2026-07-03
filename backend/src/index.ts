@@ -5,6 +5,7 @@ import { clerkWebhooksHandler } from "./webhooks/clerk";
 import loggedInUserRouter from "./routes/me.route";
 import productsRouter from "./routes/products.route";
 import streamRouter from "./routes/stream.route";
+import checkoutRouter from "./routes/checkout.route";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(clerkMiddleware());
 app.use("/api/me", loggedInUserRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/stream", streamRouter);
+app.use("/api/checkout", checkoutRouter);
 
 const port = process.env.PORT;
 
