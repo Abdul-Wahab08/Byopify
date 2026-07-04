@@ -11,7 +11,7 @@ const cartSchema = z.object({
     items: z
         .array(
             z.object({
-                productId: z.string().uuid(),
+                productId: z.uuid(),
                 quantity: z.number().int().positive(),
             }),
         )
@@ -62,7 +62,7 @@ export async function checkoutController(req: Request, res: Response, next: Next
         }
 
         const byId = new Map(checkoutProducts.map((p) => [p.id, p]));
-        let totalCents = 0;
+        let totalCents: number = 0;
         const lines: CheckoutSessionLine[] = [];
 
         for (const line of parsedCart.data.items) {
@@ -77,7 +77,7 @@ export async function checkoutController(req: Request, res: Response, next: Next
             if (totalCents < 10) {
                 return res.status(400).json({
                     data: null,
-                    message: "Total must be at least $10",
+                    message: "otal below Polar minimum (e.g. USD requires at least 10 cents)",
                 })
             }
         }
@@ -101,11 +101,13 @@ export async function checkoutController(req: Request, res: Response, next: Next
         const checkout = await createCheckout({
             products: [polarCheckoutProductId],
             prices: {
-                [polarCheckoutProductId]: [{
-                    amount_type: "fixed",
-                    price_amount: totalCents,
-                    price_currency: "usd",
-                }],
+                [polarCheckoutProductId]: [
+                    {
+                        amount_type: "fixed",
+                        price_amount: totalCents,
+                        price_currency: "usd",
+                    }
+                ],
             },
             successUrl,
             returnUrl,
