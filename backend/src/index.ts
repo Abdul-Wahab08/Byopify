@@ -6,6 +6,7 @@ import loggedInUserRouter from "./routes/me.route";
 import productsRouter from "./routes/products.route";
 import streamRouter from "./routes/stream.route";
 import checkoutRouter from "./routes/checkout.route";
+import { polarWebhooksHandler } from "./webhooks/polar";
 
 const app = express();
 
@@ -13,6 +14,10 @@ const raw = express.raw({ type: 'application/json' });
 
 app.post('/webhooks/clerk', raw, (req, res) => {
     clerkWebhooksHandler(req, res);
+})
+
+app.post('/webhooks/polar', raw, (req, res) => {
+    polarWebhooksHandler(req, res);
 })
 
 app.use(express.json({ limit: "16kb" }));
