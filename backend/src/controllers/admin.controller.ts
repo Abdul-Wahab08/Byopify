@@ -2,7 +2,7 @@ import ImageKit from "@imagekit/nodejs";
 import { NextFunction, Request, Response } from "express";
 import { db } from "../db";
 import { orderItems, products } from "../db/schema";
-import { count, desc, eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import z from "zod";
 import { deleteImageFromImagekit } from "../lib/imagekit";
 
