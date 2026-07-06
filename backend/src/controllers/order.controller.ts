@@ -5,6 +5,8 @@ import { orderItems, orders, products } from "../db/schema";
 import { desc, eq, inArray } from "drizzle-orm";
 import { db } from "../db";
 import { isStaff } from "../lib/roles";
+import { StreamChat } from "stream-chat";
+import { streamDisplayName, streamUserId } from "../lib/stream";
 
 async function getOrders(req: Request, res: Response, next: NextFunction) {
     try {
@@ -157,7 +159,91 @@ async function getOrderById(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+async function createStreamChatChannel(req: Request, res: Response, next: NextFunction) {
+    try {
+        const { userId, isAuthenticated } = getAuth(req)
+
+        if (!isAuthenticated) {
+            return res.status(401).json({
+                data: null,
+                message: "Unauthorized"
+            })
+        }
+
+        const user = await getLoggedInUser(userId)
+
+        if (!user) {
+            return res.status(404).json({
+                data: null,
+                message: "User not found"
+            })
+        }
+
+        const orderId = req.params.id as string
+        const [order] = await db
+            .select()
+            .from(orders)
+            .where(eq(orders.id, orderId))
+            .limit(1)
+
+        if (!order) {
+            return res.status(404).json({
+                data: null,
+                message: "Order not found"
+            })
+        }
+
+        if (!isStaff(user.role) && order.userId !== userId) {
+            return res.status(403).json({
+                data: null,
+                message: "Forbidden"
+            })
+        }
+
+        if (order.status !== "paid") {
+            return res.status(400).json({
+                data: null,
+                message: "Order must be paid to open support chat"
+            })
+        }
+
+        const streamApiKey = process.env.STREAM_API_KEY!
+        const streamApiSecret = process.env.STREAM_API_SECRET!
+
+        const streamServer = StreamChat.getInstance(streamApiKey, streamApiSecret)
+
+        const name = streamDisplayName(user.role, user.fullName, user.email)
+        const streamChatUserId = streamUserId(userId)
+
+        await streamServer.upsertUser({
+            id: streamChatUserId,
+            name,
+        })
+
+        const channelId = `order-${order.id}`
+        const channel = streamServer.channel("messaging", channelId, {
+            name: `Support · order ${order.id.slice(0, 8)}`,
+            createdBy: streamChatUserId,
+        } as any)
+
+        await channel.create()
+        await channel.addMembers([streamChatUserId])
+
+        return res.status(200).json({
+            data: {
+                channelType: "messaging",
+                channelId,
+                streamChatUserId
+            },
+            message: "Stream chat channel created successfully"
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export {
     getOrders,
     getOrderById,
+    createStreamChatChannel,
 }

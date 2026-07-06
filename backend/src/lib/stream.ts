@@ -10,3 +10,7 @@ export function streamDisplayName(
     if(role === 'support') return `Support: ${base}`;
     return base;
 }
+
+export function streamUserId(clerkUserId: string): string {
+    return `clerk_${clerkUserId}`
+}
