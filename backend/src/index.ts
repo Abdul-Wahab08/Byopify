@@ -10,6 +10,7 @@ import { polarWebhooksHandler } from "./webhooks/polar";
 import * as Sentry from "@sentry/node";
 import { clerkSentryMiddleware } from "./middlewares/clerkSentry.middleware";
 import adminRouter from "./routes/admin.route";
+import orderRouter from "./routes/order.route";
 
 const app = express();
 
@@ -33,7 +34,8 @@ app.use("/api/me", loggedInUserRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/stream", streamRouter);
 app.use("/api/checkout", checkoutRouter);
-app.use("/api/admin", adminRouter)
+app.use("/api/admin", adminRouter);
+app.use("/api/orders", orderRouter);
 
 Sentry.setupConnectErrorHandler(app);
 
