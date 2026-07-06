@@ -1,7 +1,7 @@
 import { getAuth } from "@clerk/express";
 import { NextFunction, Request, Response } from "express";
 import { getLoggedInUser } from "../lib/user";
-import { orderItems, orders, products } from "../db/schema";
+import { orderItems, orders, products, users } from "../db/schema";
 import { desc, eq, inArray } from "drizzle-orm";
 import { db } from "../db";
 import { isStaff } from "../lib/roles";
@@ -12,7 +12,7 @@ async function getOrders(req: Request, res: Response, next: NextFunction) {
     try {
         const { userId, isAuthenticated } = getAuth(req)
 
-        if (!isAuthenticated) {
+        if (!isAuthenticated || !userId) {
             return res.status(401).json({
                 data: null,
                 message: "Unauthorized"
@@ -92,7 +92,7 @@ async function getOrderById(req: Request, res: Response, next: NextFunction) {
     try {
         const { userId, isAuthenticated } = getAuth(req)
 
-        if (!isAuthenticated) {
+        if (!isAuthenticated || !userId) {
             return res.status(401).json({
                 data: null,
                 message: "Unauthorized"
@@ -163,7 +163,7 @@ async function createStreamChatChannel(req: Request, res: Response, next: NextFu
     try {
         const { userId, isAuthenticated } = getAuth(req)
 
-        if (!isAuthenticated) {
+        if (!isAuthenticated || !userId) {
             return res.status(401).json({
                 data: null,
                 message: "Unauthorized"
@@ -242,8 +242,121 @@ async function createStreamChatChannel(req: Request, res: Response, next: NextFu
     }
 }
 
+async function sendVideoInvite(req: Request, res: Response, next: NextFunction) {
+    try {
+        const { userId, isAuthenticated } = getAuth(req)
+
+        if (!isAuthenticated || !userId) {
+            return res.status(401).json({
+                data: null,
+                message: "Unauthorized"
+            })
+        }
+
+        const user = await getLoggedInUser(userId)
+
+        if (!user) {
+            return res.status(404).json({
+                data: null,
+                message: "User not found"
+            })
+        }
+
+        if (!isStaff(user.role)) {
+            return res.status(403).json({
+                data: null,
+                message: "Admin or Support staff can send a video invite"
+            })
+        }
+
+        const orderId = req.params.id as string
+        const [order] = await db
+            .select()
+            .from(orders)
+            .where(eq(orders.id, orderId))
+            .limit(1)
+
+        if (!order) {
+            return res.status(404).json({
+                data: null,
+                message: "Order not found"
+            })
+        }
+
+        if (order.status !== "paid") {
+            return res.status(400).json({
+                data: null,
+                message: "Order must be paid to send a video invite"
+            })
+        }
+
+        const [customer] = await db
+            .select()
+            .from(users)
+            .where(eq(users.id, order.userId))
+            .limit(1)
+
+        if (!customer) {
+            return res.status(404).json({
+                data: null,
+                message: "Customer not found"
+            })
+        }
+
+        const streamApiKey = process.env.STREAM_API_KEY!
+        const streamApiSecret = process.env.STREAM_API_SECRET!
+
+        const streamServer = StreamChat.getInstance(streamApiKey, streamApiSecret)
+
+        const customerName = streamDisplayName(customer.role, customer.fullName, customer.email)
+        const customerStreamId = streamUserId(userId)
+
+        await streamServer.upsertUser({
+            id: customerStreamId,
+            name: customerName,
+        })
+
+        const staffName = streamDisplayName(user.role, user.fullName, user.email)
+        const staffStreamId = streamUserId(userId)
+
+        await streamServer.upsertUser({
+            id: staffStreamId,
+            name: staffName,
+        })
+
+        const channelId = `order-${order.id}`
+        const channel = streamServer.channel("messaging", channelId, {
+            name: `Support · order ${order.id.slice(0, 8)}`,
+            createdBy: staffStreamId,
+        } as any)
+
+        await channel.create()
+        await channel.addMembers([customerStreamId, staffStreamId])
+
+        const frontendUrl = process.env.FRONTEND_URL!.replace(/\/+$/, "")
+        const joinUrl = `${frontendUrl}/orders/${order.id}/call`;
+
+        await channel.sendMessage({
+            text: `Click [here](${joinUrl}) to join the video call`,
+            user_id: staffStreamId,
+            custom: {
+                video_invite: true,
+                video_invite_join_url: joinUrl
+            }
+        })
+
+        return res.status(200).json({
+            data: joinUrl,
+            message: "Video invite sent successfully"
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export {
     getOrders,
     getOrderById,
     createStreamChatChannel,
+    sendVideoInvite
 }
