@@ -6,6 +6,7 @@ import * as Sentry from "@sentry/react";
 import { ClerkProvider } from '@clerk/react'
 import { SentryUserSync } from './components/SentryUserSync.tsx';
 import { SentryErrorFallback } from './components/SentryErrorFallback.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 Sentry.init({
   dsn: import.meta.env.VITE_PUBLIC_SENTRY_DSN,
@@ -27,12 +28,16 @@ Sentry.init({
 
 const publishableKey = import.meta.env.VITE_PUBLIC_CLERK_PUBLISHABLE_KEY
 
+const queryClient = new QueryClient()
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <SentryUserSync />
     <ClerkProvider publishableKey={publishableKey}>
       <Sentry.ErrorBoundary fallback={<SentryErrorFallback />}>
-      <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </Sentry.ErrorBoundary>
     </ClerkProvider>
   </StrictMode>,
