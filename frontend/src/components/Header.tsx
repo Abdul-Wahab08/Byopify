@@ -1,13 +1,12 @@
 import { Show, SignInButton, UserButton } from '@clerk/react'
 import { LogInIcon, PackageIcon, SettingsIcon, ShoppingBagIcon, ShoppingCartIcon, StoreIcon } from 'lucide-react'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router'
+import { useLoggedInUser } from '../hooks/useLoggedInUser'
 import type { User } from '../types/types'
-import type { RootState } from '../store/store'
-
 
 function Header() {
-  const userData: User = useSelector((state: RootState)=> state.auth.userData)
+  const { response } = useLoggedInUser()
+  const userData: User = response?.data
 
   return (
     <header className="sticky top-0 z-50 border-b border-base-300 bg-base-100/95 shadow-sm backdrop-blur-md">
@@ -47,7 +46,7 @@ function Header() {
           <Link
             to="/cart"
             className="btn btn-ghost gap-2 font-medium indicator"
-            //aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
+          //aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
           >
             {/* {cartCount > 0 ? (
               <span className="indicator-item badge badge-sm badge-primary min-w-2 px-1.5 font-sans text-xs tabular-nums">
