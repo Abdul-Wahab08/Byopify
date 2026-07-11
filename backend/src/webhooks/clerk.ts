@@ -9,7 +9,7 @@ export async function clerkWebhooksHandler(req: Request, res: Response) {
     try {
         const payload = req.body instanceof Buffer ? req.body.toString("utf8") : String(req.body);
 
-        const request = new Request("http://localhost:3000/api/webhooks", {
+        const request = new Request("http://internal/webhooks/clerk", {
             method: "POST",
             headers: new Headers(req.headers as HeadersInit),
             body: payload
@@ -26,6 +26,7 @@ export async function clerkWebhooksHandler(req: Request, res: Response) {
             const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ") || user.username || null;
 
             const role = parseRole(user.public_metadata?.role);
+            console.log("Role: ", role, "Email: ", email, "FullName: ", fullName, "UserId: ", user.id)
 
             await db
                 .insert(users)
