@@ -121,7 +121,13 @@ export async function polarWebhooksHandler(req: Request, res: Response) {
 
             if (checkoutSessionId) {
 
-                const ok = await completeCheckoutSession(checkoutSessionId, checkoutId, polarOrderId)
+                if(!checkoutId || !polarOrderId) {
+                    return res.status(500).json({
+                        error: "Polar order.paid: missing checkoutId or polarOrderId",
+                    });
+                }
+
+                const ok = await completeCheckoutSession(checkoutSessionId, checkoutId, polarOrderId);
 
                 if (ok) {
                     return res.json({ ok: true });

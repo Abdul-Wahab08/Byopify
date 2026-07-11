@@ -223,8 +223,8 @@ async function createStreamChatChannel(req: Request, res: Response, next: NextFu
         const channelId = `order-${order.id}`
         const channel = streamServer.channel("messaging", channelId, {
             name: `Support · order ${order.id.slice(0, 8)}`,
-            createdBy: streamChatUserId,
-        } as any)
+            created_by_id: streamChatUserId,
+        })
 
         await channel.create()
         await channel.addMembers([streamChatUserId])
@@ -309,7 +309,7 @@ async function sendVideoInvite(req: Request, res: Response, next: NextFunction) 
         const streamServer = StreamChat.getInstance(streamApiKey, streamApiSecret)
 
         const customerName = streamDisplayName(customer.role, customer.fullName, customer.email)
-        const customerStreamId = streamUserId(userId)
+        const customerStreamId = streamUserId(customer.id)
 
         await streamServer.upsertUser({
             id: customerStreamId,
@@ -327,8 +327,8 @@ async function sendVideoInvite(req: Request, res: Response, next: NextFunction) 
         const channelId = `order-${order.id}`
         const channel = streamServer.channel("messaging", channelId, {
             name: `Support · order ${order.id.slice(0, 8)}`,
-            createdBy: staffStreamId,
-        } as any)
+            created_by_id: staffStreamId,
+        })
 
         await channel.create()
         await channel.addMembers([customerStreamId, staffStreamId])
@@ -339,10 +339,8 @@ async function sendVideoInvite(req: Request, res: Response, next: NextFunction) 
         await channel.sendMessage({
             text: `Click [here](${joinUrl}) to join the video call`,
             user_id: staffStreamId,
-            custom: {
-                video_invite: true,
-                video_invite_join_url: joinUrl
-            }
+            video_invite: true,
+            video_invite_join_url: joinUrl
         })
 
         return res.status(200).json({

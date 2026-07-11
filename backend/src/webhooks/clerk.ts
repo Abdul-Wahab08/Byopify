@@ -23,7 +23,7 @@ export async function clerkWebhooksHandler(req: Request, res: Response) {
             const email = user.email_addresses?.find(address => address.id === user.primary_email_address_id)?.email_address ??
                 user.email_addresses[0]?.email_address
 
-            const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ") || user.username || null;
+            const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ") || user.username || "User";
 
             const role = parseRole(user.public_metadata?.role);
             console.log("Role: ", role, "Email: ", email, "FullName: ", fullName, "UserId: ", user.id)
