@@ -18,6 +18,7 @@ export const fetchApi = async (path: string, options: fetchApiOptions = {}) => {
             headers.Authorization = `Bearer ${token}`
         }
     }
+
     let response;
     try {
         response = await fetch(`${baseUrl}${path}`, {
@@ -60,7 +61,7 @@ export const fetchApi = async (path: string, options: fetchApiOptions = {}) => {
                 extra: { path, method, status: response.status },
             });
         }
-
+        
         throw err;
     }
 

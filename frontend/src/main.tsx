@@ -7,6 +7,10 @@ import { ClerkProvider } from '@clerk/react'
 import { SentryUserSync } from './components/SentryUserSync.tsx';
 import { SentryErrorFallback } from './components/SentryErrorFallback.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createBrowserRouter, RouterProvider } from 'react-router';
+import Home from './pages/Home.tsx';
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
 
 Sentry.init({
   dsn: import.meta.env.VITE_PUBLIC_SENTRY_DSN,
@@ -30,15 +34,30 @@ const publishableKey = import.meta.env.VITE_PUBLIC_CLERK_PUBLISHABLE_KEY
 
 const queryClient = new QueryClient()
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <Home />
+      }
+    ]
+  },
+])
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <SentryUserSync />
+   <Provider store={store}>
     <ClerkProvider publishableKey={publishableKey}>
+      <SentryUserSync />
+      <QueryClientProvider client={queryClient}>
       <Sentry.ErrorBoundary fallback={<SentryErrorFallback />}>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
+          <RouterProvider router={router} />
       </Sentry.ErrorBoundary>
+      </QueryClientProvider>
     </ClerkProvider>
+    </Provider>
   </StrictMode>,
 )
