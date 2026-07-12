@@ -32,8 +32,7 @@ async function getCategories(_req: Request, res: Response, next: NextFunction) {
                 category: productsTable.category
             })
             .from(productsTable)
-            .where(eq(productsTable.active, true))
-            .orderBy(desc(productsTable.createdAt))
+            .where(eq(productsTable.active, true)) 
 
         return res.status(200).json({
             data: categories,
