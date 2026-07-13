@@ -9,6 +9,8 @@ import { SentryErrorFallback } from './components/SentryErrorFallback.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import Home from './pages/Home.tsx';
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
 
 Sentry.init({
   dsn: import.meta.env.VITE_PUBLIC_SENTRY_DSN,
@@ -51,7 +53,9 @@ createRoot(document.getElementById('root')!).render(
       <SentryUserSync />
       <QueryClientProvider client={queryClient}>
       <Sentry.ErrorBoundary fallback={<SentryErrorFallback />}>
+      <Provider store={store}>
           <RouterProvider router={router} />
+          </Provider>
       </Sentry.ErrorBoundary>
       </QueryClientProvider>
     </ClerkProvider>

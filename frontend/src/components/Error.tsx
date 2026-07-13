@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 interface ErrorProps {
     message: string;
-    action: {
+    action?: {
         to: string;
         label: string;
     };
