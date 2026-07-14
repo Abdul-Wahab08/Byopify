@@ -11,6 +11,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import Home from './pages/Home.tsx';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
+import ProductDetails from './pages/ProductDetails.tsx';
 
 Sentry.init({
   dsn: import.meta.env.VITE_PUBLIC_SENTRY_DSN,
@@ -42,7 +43,11 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
-      }
+      },
+      {
+        path: "/product/:slug",
+        element: <ProductDetails />
+      },
     ]
   },
 ])
