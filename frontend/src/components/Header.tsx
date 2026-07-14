@@ -3,10 +3,15 @@ import { LogInIcon, PackageIcon, SettingsIcon, ShoppingBagIcon, ShoppingCartIcon
 import { Link } from 'react-router'
 import { useLoggedInUser } from '../hooks/useLoggedInUser'
 import type { User } from '../types/types'
+import { useSelector } from 'react-redux'
+import type { RootState } from '../store/store'
 
 function Header() {
   const { response } = useLoggedInUser()
   const userData: User = response?.data
+
+  const cartItems = useSelector((state: RootState) => state.cart.items)
+  const cartCount = cartItems.length
 
   return (
     <header className="sticky top-0 z-50 border-b border-base-300 bg-base-100/95 shadow-sm backdrop-blur-md">
@@ -46,13 +51,12 @@ function Header() {
           <Link
             to="/cart"
             className="btn btn-ghost gap-2 font-medium indicator"
-          //aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}
-          >
-            {/* {cartCount > 0 ? (
+          aria-label={cartCount > 0 ? `Cart, ${cartCount} items` : "Cart"}>
+            {cartCount > 0 ? (
               <span className="indicator-item badge badge-sm badge-primary min-w-2 px-1.5 font-sans text-xs tabular-nums">
                 {cartCount > 99 ? "99+" : cartCount}
               </span>
-            ) : null} */}
+            ) : null}
             <ShoppingCartIcon className="size-6 opacity-90" aria-hidden />
             <span className="hidden sm:inline">Cart</span>
           </Link>
