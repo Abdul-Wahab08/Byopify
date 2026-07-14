@@ -6,6 +6,7 @@ import { ProductPageSkeleton } from "../components/LoadingSkeletons"
 import Error from "../components/Error"
 import { useDispatch } from "react-redux"
 import { addItem } from "../store/slices/cartSlice"
+import { IK_PRESETS, imageKitWatermarkedUrl } from "../lib/imagekitUrl"
 
 const HIGHLIGHTS = [
   "Secure checkout",
@@ -21,6 +22,8 @@ function ProductDetails() {
   if(isLoading) return <ProductPageSkeleton />
 
   if(error || !product) return <Error message="Product not Found" action={{to: "/", label: "Go Home"}} />
+
+  const watermarkedFullUrl = product.imageUrl ? imageKitWatermarkedUrl(product.imageUrl, IK_PRESETS.productHero) : null
 
   const category = product.category ?? "General";
 
@@ -54,7 +57,7 @@ function ProductDetails() {
             )}
           </figure>
 
-          {/* {watermarkedFullUrl ? (
+          {watermarkedFullUrl ? (
             <div className="flex flex-wrap items-center gap-2 border-t border-base-300 bg-base-200/40 px-3 py-2">
               <a
                 className="btn btn-ghost btn-xs gap-1"
@@ -66,7 +69,7 @@ function ProductDetails() {
                 Open full size
               </a>
             </div>
-          ) : null} */}
+          ) : null}
         </div>
 
         <div className="flex flex-col text-left">
