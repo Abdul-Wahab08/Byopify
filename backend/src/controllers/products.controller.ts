@@ -46,8 +46,9 @@ async function getCategories(_req: Request, res: Response, next: NextFunction) {
 async function getProductBySlug(req: Request, res: Response, next: NextFunction) {
     try {
         const { slug } = req.params;
+        console.log("Slug: ", slug)
 
-        const product = await db
+        const [product] = await db
             .select()
             .from(productsTable)
             .where(and(
