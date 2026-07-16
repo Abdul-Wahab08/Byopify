@@ -99,8 +99,7 @@ function ProductDetails() {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <button
-              type="button"
-              onClick={() => dispatch(addItem(product.id))}
+              onClick={() => dispatch(addItem(product))}
               className="btn btn-primary btn-lg gap-2 shadow-lg"
             >
               <ShoppingCartIcon className="size-5" aria-hidden />

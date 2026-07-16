@@ -46,7 +46,7 @@ function CatalogProductCard({product}: CatalogProductCardProps) {
           </span>
           <button
             type="button"
-           onClick={() => dispatch(addItem(product.id))}
+           onClick={() => dispatch(addItem(product))}
             className="btn btn-primary btn-sm gap-1 shadow"
           >
             <PlusIcon className="size-4" aria-hidden />
