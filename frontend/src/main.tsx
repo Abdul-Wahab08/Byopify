@@ -12,6 +12,7 @@ import Home from './pages/Home.tsx';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import ProductDetails from './pages/ProductDetails.tsx';
+import Cart from './pages/Cart.tsx';
 
 Sentry.init({
   dsn: import.meta.env.VITE_PUBLIC_SENTRY_DSN,
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
         path: "/product/:slug",
         element: <ProductDetails />
       },
+      {
+        path: "/cart",
+        element: <Cart />
+      }
     ]
   },
 ])
