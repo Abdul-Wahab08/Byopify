@@ -24,7 +24,7 @@ async function isAlreadyPaid(polarCheckoutId?: string, polarOrderId?: string) {
             .where(eq(orders.polarCheckoutId, polarCheckoutId))
             .limit(1)
 
-        if (order.status === "paid") return true
+        if (order?.status === "paid") return true
     }
 
     if (polarOrderId) {
@@ -34,7 +34,7 @@ async function isAlreadyPaid(polarCheckoutId?: string, polarOrderId?: string) {
             .where(eq(orders.polarOrderId, polarOrderId))
             .limit(1)
 
-        if (order.status === "paid") return true
+        if (order?.status === "paid") return true
     }
 
     return false
@@ -121,7 +121,7 @@ export async function polarWebhooksHandler(req: Request, res: Response) {
 
             if (checkoutSessionId) {
 
-                if(!checkoutId || !polarOrderId) {
+                if (!checkoutId || !polarOrderId) {
                     return res.status(500).json({
                         error: "Polar order.paid: missing checkoutId or polarOrderId",
                     });
