@@ -3,6 +3,6 @@ import {checkoutController} from "../controllers/checkout.controller";
 
 const router = Router()
 
-router.get('/checkout', checkoutController)
+router.post('/', checkoutController)
 
 export default router
