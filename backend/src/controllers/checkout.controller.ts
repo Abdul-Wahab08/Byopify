@@ -112,7 +112,10 @@ export async function checkoutController(req: Request, res: Response, next: Next
             successUrl,
             returnUrl,
             external_customer_id: userId,
-            customer_email: user.email
+            customer_email: user.email,
+            metadata: {
+                checkout_session_id: checkoutSession.id
+            }
         })
 
         await db
