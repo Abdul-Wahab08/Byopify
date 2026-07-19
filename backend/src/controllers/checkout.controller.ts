@@ -77,7 +77,7 @@ export async function checkoutController(req: Request, res: Response, next: Next
             if (totalCents < 10) {
                 return res.status(400).json({
                     data: null,
-                    message: "otal below Polar minimum (e.g. USD requires at least 10 cents)",
+                    message: "Total below Polar minimum (e.g. USD requires at least 10 cents)",
                 })
             }
         }

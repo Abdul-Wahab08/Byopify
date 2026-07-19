@@ -15,23 +15,30 @@ export function useCartPage() {
     }, 0)
 
     async function checkout() {
-        setIsCheckoutLoading(true)
+        try {
+            setIsCheckoutLoading(true)
 
-        const body: any = cartItems.map((item) => ({
-            productId: item.id,
-            quantity: item.quantity
-        }))
+            const body: any = {
+                items: cartItems.map((item) => ({
+                    productId: item.id,
+                    quantity: item.quantity
+                }))
+            }
 
-        const response = await fetchApi('/checkout', {
-            getToken,
-            method: 'POST',
-            body
-        });
-
-        if (response.data) {
-            window.location.href = response.data;
+            const response = await fetchApi('/checkout', {
+                getToken,
+                method: 'POST',
+                body
+            });
+            
+            if (response.data) {
+                window.location.href = response.data;
+            }
+        } catch (error) {
+            throw error
+        } finally {
+            setIsCheckoutLoading(false)
         }
-        setIsCheckoutLoading(false)
     }
 
     return {
