@@ -7,8 +7,8 @@ type createCheckoutbody = {
             price_currency: string;
         }>
     >;
-    successUrl: string;
-    returnUrl?: string;
+    success_url: string;
+    return_url?: string;
     external_customer_id?: string;
     customer_email?: string;
     metadata?: Record<string, string | number | boolean>;

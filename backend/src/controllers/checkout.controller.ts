@@ -109,8 +109,8 @@ export async function checkoutController(req: Request, res: Response, next: Next
                     }
                 ],
             },
-            successUrl,
-            returnUrl,
+            success_url: successUrl,
+            return_url: returnUrl,
             external_customer_id: userId,
             customer_email: user.email,
             metadata: {
