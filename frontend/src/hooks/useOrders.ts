@@ -19,7 +19,7 @@ export function useOrders() {
     })
 
     const loggedInUserData: User = user?.data;
-    const isStaff = loggedInUserData.role === "admin" || loggedInUserData.role === "support";
+    const isStaff = loggedInUserData?.role === "admin" || loggedInUserData?.role === "support";
 
     const orders: orders[] = ordersData?.data || [];
 
