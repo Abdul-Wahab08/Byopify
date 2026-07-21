@@ -15,6 +15,7 @@ import ProductDetails from './pages/ProductDetails.tsx';
 import Cart from './pages/Cart.tsx';
 import CheckoutReturn from './pages/CheckoutReturn.tsx';
 import Orders from './pages/Orders.tsx';
+import AuthLayout from './components/AuthLayout.tsx';
 
 Sentry.init({
   dsn: import.meta.env.VITE_PUBLIC_SENTRY_DSN,
@@ -61,7 +62,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/orders",
-        element: <Orders />
+        element: (
+          <AuthLayout authentication>
+            <Orders />
+          </AuthLayout>
+        )
       }
     ]
   },
@@ -72,11 +77,11 @@ createRoot(document.getElementById('root')!).render(
     <ClerkProvider publishableKey={publishableKey}>
       <SentryUserSync />
       <QueryClientProvider client={queryClient}>
-      <Sentry.ErrorBoundary fallback={<SentryErrorFallback />}>
-      <Provider store={store}>
-          <RouterProvider router={router} />
+        <Sentry.ErrorBoundary fallback={<SentryErrorFallback />}>
+          <Provider store={store}>
+            <RouterProvider router={router} />
           </Provider>
-      </Sentry.ErrorBoundary>
+        </Sentry.ErrorBoundary>
       </QueryClientProvider>
     </ClerkProvider>
   </StrictMode>,
