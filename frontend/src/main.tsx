@@ -14,6 +14,7 @@ import { store } from './store/store.ts';
 import ProductDetails from './pages/ProductDetails.tsx';
 import Cart from './pages/Cart.tsx';
 import CheckoutReturn from './pages/CheckoutReturn.tsx';
+import Orders from './pages/Orders.tsx';
 
 Sentry.init({
   dsn: import.meta.env.VITE_PUBLIC_SENTRY_DSN,
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: "/checkout/return",
         element: <CheckoutReturn />
+      },
+      {
+        path: "/orders",
+        element: <Orders />
       }
     ]
   },

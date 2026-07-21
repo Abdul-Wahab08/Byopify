@@ -8,6 +8,13 @@ export type CheckoutSessionLine = {
     unitPriceCents: number;
 };
 
+export type PreviewItem = {
+    name: string;
+    slug: string;
+    imageUrl: string;
+    quantity: number;
+};
+
 export interface User {
     id: string;
     clerkUserId: string;
@@ -37,6 +44,7 @@ export interface orders {
     userId: string;
     status: OrderStatus;
     totalCents: number;
+    previewItems: PreviewItem[];
     polarCheckoutId: string;
     polarOrderId: string;
     createdAt: Date;
