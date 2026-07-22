@@ -16,6 +16,7 @@ import Cart from './pages/Cart.tsx';
 import CheckoutReturn from './pages/CheckoutReturn.tsx';
 import Orders from './pages/Orders.tsx';
 import AuthLayout from './components/AuthLayout.tsx';
+import { SentryDemoPage } from './pages/SentryDemoPage.tsx';
 
 Sentry.init({
   dsn: import.meta.env.VITE_PUBLIC_SENTRY_DSN,
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
             <Orders />
           </AuthLayout>
         )
+      },
+      {
+        path: "/sentry-demo",
+        element: <SentryDemoPage />
       }
     ]
   },
