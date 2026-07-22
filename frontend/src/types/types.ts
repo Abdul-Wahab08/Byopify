@@ -54,7 +54,7 @@ export interface orders {
 export interface orderItems {
     id: string;
     orderId: string;
-    productId: string;
+    product: Product;
     quantity: number;
     unitPriceCents: number;
 }
