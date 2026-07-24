@@ -97,13 +97,13 @@ function OrderDetails() {
         </div>
 
         <div className="tabs tabs-boxed mt-3 w-fit flex-wrap bg-base-300/50 p-1">
-          <NavLink to={`/orders/${id}`} end className={tabClass}>
+          <NavLink to={`/order/${id}`} end className={tabClass}>
             <LayoutListIcon className="size-4 shrink-0" aria-hidden />
             Summary
           </NavLink>
 
           {order.status === "paid" ? (
-            <NavLink to={`/orders/${id}/chat`} className={tabClass}>
+            <NavLink to={`/order/${id}/chat`} className={tabClass}>
               <MessageCircleIcon className="size-4 shrink-0" aria-hidden />
               Support chat
             </NavLink>
