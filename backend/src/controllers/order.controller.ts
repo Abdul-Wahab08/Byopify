@@ -36,7 +36,7 @@ async function getOrders(req: Request, res: Response, next: NextFunction) {
             : await db
                 .select()
                 .from(orders)
-                .where(eq(orders.userId, userId))
+                .where(eq(orders.userId, user.id))
                 .orderBy(desc(orders.createdAt))
 
         if (allOrders.length === 0) {
@@ -122,7 +122,7 @@ async function getOrderById(req: Request, res: Response, next: NextFunction) {
             })
         }
 
-        if (!isStaff(user.role) && order.userId !== userId) {
+        if (!isStaff(user.role) && order.userId !== user.id) {
             return res.status(403).json({
                 data: null,
                 message: "Forbidden"
@@ -193,7 +193,7 @@ async function createStreamChatChannel(req: Request, res: Response, next: NextFu
             })
         }
 
-        if (!isStaff(user.role) && order.userId !== userId) {
+        if (!isStaff(user.role) && order.userId !== user.id) {
             return res.status(403).json({
                 data: null,
                 message: "Forbidden"
