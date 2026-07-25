@@ -30,9 +30,9 @@ function Orders() {
       <Error message="Could not load orders." action={{ to: "/", label: "Back to shop" }} />
     );
   }
-    
+
   return (
-   <div className="text-left">
+    <div className="text-left">
       <h1 className="mb-2 flex items-center gap-2 text-3xl font-bold text-base-content">
         <PackageIcon className="size-8 text-primary" aria-hidden />
         {isStaff ? "Orders" : "Your orders"}
@@ -67,7 +67,7 @@ function Orders() {
             return (
               <li key={order.id}>
                 <Link
-                  to={`/orders/${order.id}`}
+                  to={`/order/${order.id}`}
                   className="group card border border-base-300 bg-base-100 shadow-sm transition hover:border-primary/45 hover:shadow-md"
                 >
                   <div className="card-body flex-row flex-wrap items-center gap-4 py-5 sm:gap-5">
@@ -80,13 +80,12 @@ function Orders() {
                         </span>
 
                         <span
-                          className={`badge badge-sm capitalize ${
-                            order.status === "paid"
+                          className={`badge badge-sm capitalize ${order.status === "paid"
                               ? "badge-success"
                               : order.status === "pending"
                                 ? "badge-warning"
                                 : "badge-error"
-                          }`}
+                            }`}
                         >
                           {order.status}
                         </span>

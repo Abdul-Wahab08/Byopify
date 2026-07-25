@@ -4,14 +4,14 @@ import { ListOrderedIcon, PackageIcon } from "lucide-react";
 import { IK_PRESETS, imageKitOptimizedUrl } from "../lib/imagekitUrl";
 import type { orderItems, orders } from "../types/types";
 
-type OutletContextProps = {
-    order: orders;
-    items: orderItems[];
+export type OutletContextProps = {
+  order: orders;
+  items: orderItems[];
 }
 
 function OrderSummaryPage() {
 
-    const {order, items} = useOutletContext<OutletContextProps>();
+  const { order, items } = useOutletContext<OutletContextProps>();
 
   return (
     <div className="overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-md">
