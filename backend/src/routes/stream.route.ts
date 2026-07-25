@@ -46,7 +46,7 @@ router.post("/create-token", async (req: Request, res: Response, next: NextFunct
         return res.status(200).json({
             data: {
                 token,
-                streamId,
+                id: streamId,
                 name,
                 apikey: process.env.STREAM_API_KEY
             },
