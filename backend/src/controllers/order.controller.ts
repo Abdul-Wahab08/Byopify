@@ -334,7 +334,7 @@ async function sendVideoInvite(req: Request, res: Response, next: NextFunction) 
         await channel.addMembers([customerStreamId, staffStreamId])
 
         const frontendUrl = process.env.FRONTEND_URL!.replace(/\/+$/, "")
-        const joinUrl = `${frontendUrl}/orders/${order.id}/call`;
+        const joinUrl = `${frontendUrl}/order/${order.id}/call`;
 
         await channel.sendMessage({
             text: `Click [here](${joinUrl}) to join the video call`,
