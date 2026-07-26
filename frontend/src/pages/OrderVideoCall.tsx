@@ -19,6 +19,8 @@ function OrderVideoCall() {
         orderError
     } = useOrderVideoPage();
 
+     if (isLoading) return <OrderVideoSkeleton />
+
     if (error) return <Error message={error} />
 
     if (orderError || !order) {
@@ -27,8 +29,6 @@ function OrderVideoCall() {
             action={{ to: "/orders", label: "Back to orders" }}
         />
     }
-
-    if (isLoading) return <OrderVideoSkeleton />
 
     if (!paid) {
         return (
