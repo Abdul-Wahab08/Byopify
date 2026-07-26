@@ -9,10 +9,12 @@ type AuthLayoutProps = {
 }
 function AuthLayout({ authentication = true, children }: AuthLayoutProps) {
 
-    const { isSignedIn } = useAuth();
+    const { isSignedIn, isLoaded } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
+        if(!isLoaded) return
+
         if (authentication && authentication !== isSignedIn) {
             navigate('/')
         }

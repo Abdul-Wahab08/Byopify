@@ -10,7 +10,7 @@ export function useOrderDetails() {
     const { getToken } = useAuth();
 
     const { data: orderDetails, isLoading, error } = useQuery({
-        queryKey: ['orderDetails'],
+        queryKey: ['orderDetails', id],
         queryFn: () => fetchApi(`/orders/get-order-by-id/${id}`, { getToken }),
         enabled: Boolean(id)
     })

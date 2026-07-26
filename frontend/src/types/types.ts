@@ -44,7 +44,7 @@ export interface orders {
     userId: string;
     status: OrderStatus;
     totalCents: number;
-    previewItems: PreviewItem[];
+    previewItems?: PreviewItem[];
     polarCheckoutId: string;
     polarOrderId: string;
     createdAt: Date;

@@ -20,6 +20,7 @@ import { SentryDemoPage } from './pages/SentryDemoPage.tsx';
 import OrderDetails from './pages/OrderDetails.tsx';
 import OrderSummaryPage from './pages/OrderSummaryPage.tsx';
 import OrderChat from './pages/OrderChat.tsx';
+import OrderVideoCall from './pages/OrderVideoCall.tsx';
 
 Sentry.init({
   dsn: import.meta.env.VITE_PUBLIC_SENTRY_DSN,
@@ -89,6 +90,14 @@ const router = createBrowserRouter([
             element: <OrderChat />
           }
         ],
+      },
+      {
+        path: "/order/:id/call",
+        element: (
+          <AuthLayout authentication>
+            <OrderVideoCall />
+          </AuthLayout>
+        ),
       },
       {
         path: "/sentry-demo",
