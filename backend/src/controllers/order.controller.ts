@@ -309,7 +309,7 @@ async function sendVideoInvite(req: Request, res: Response, next: NextFunction) 
         const streamServer = StreamChat.getInstance(streamApiKey, streamApiSecret)
 
         const customerName = streamDisplayName(customer.role, customer.fullName, customer.email)
-        const customerStreamId = streamUserId(customer.id)
+        const customerStreamId = streamUserId(customer.clerkUserId)
 
         await streamServer.upsertUser({
             id: customerStreamId,
