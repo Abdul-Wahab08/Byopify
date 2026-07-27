@@ -8,7 +8,7 @@ router.use(isAdminMiddleware)
 router.get('/get-imagekit-auth-parameters', getImagekitAuthParameters)
 router.get('/list-admin-products', listAdminProducts)
 router.post('/create-admin-product', createAdminProduct)
-router.put('/update-admin-product', updateAdminProduct)
-router.delete('/delete-admin-products', deleteAdminProducts)
+router.patch('/update-admin-product/:id', updateAdminProduct)
+router.delete('/delete-admin-products/:id', deleteAdminProducts)
 
 export default router
