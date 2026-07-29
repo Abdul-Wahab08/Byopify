@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/react";
 
-interface fetchApiOptions extends RequestInit {
+export interface fetchApiOptions extends RequestInit {
     getToken?: () => Promise<string | null>;
 }
 
