@@ -73,7 +73,7 @@ export function useOrderChatPage() {
     }, [id, getToken, user])
 
     const channel = client && id ? client.channel("messaging", `order-${id}`) : null
-    const isStaff = user.role === "admin" || user.role === "support";
+    const isStaff = user?.role === "admin" || user?.role === "support";
 
     return {
         client,
