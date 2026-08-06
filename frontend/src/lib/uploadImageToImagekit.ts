@@ -18,7 +18,6 @@ export async function uploadImageToImagekit(file: File, getToken: () => Promise<
       expire: auth.expire,
       publicKey: auth.publicKey
     })
-    console.log("Upload response:", response);
 
     return {
       url: response.url,

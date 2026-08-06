@@ -147,7 +147,7 @@ function AdminProducts() {
 
                     <AdminProductForm
                         key={editing?.id ?? "new"}
-                        initial={editing!}
+                        initial={editing ?? undefined}
                         saving={upsertProductMutation.isPending}
                         error={upsertProductMutation.isError}
                         getToken={getToken}
@@ -155,7 +155,7 @@ function AdminProducts() {
                             setIsModalOpen(false);
                             setEditing(null);
                         }}
-                        onSubmit={(body: any) => upsertProductMutation.mutate({ body, id: editing?.id })}
+                        onSubmit={(body: Partial<Product>) => upsertProductMutation.mutate({ body, id: editing?.id })}
                     />
                 </div>
 

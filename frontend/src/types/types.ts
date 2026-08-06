@@ -34,7 +34,7 @@ export interface Product {
     priceCents: number;
     currency: string;
     imageUrl: string;
-    imageKitFileId: string;
+    imageKitFileId: string | null;
     active: boolean;
     createdAt: Date;
 }

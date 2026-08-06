@@ -9,13 +9,14 @@ type AdminProductFormProps = {
   error?: boolean;
   getToken: () => Promise<string | null>;
   onCancel: () => void;
-  onSubmit: (product: Product) => void;
+  onSubmit: (product: Partial<Product>) => void;
 };
+
 
 function AdminProductForm({ initial, saving, error, getToken, onCancel, onSubmit }: AdminProductFormProps) {
   const [slug, setSlug] = useState(initial?.slug ?? "");
   const [name, setName] = useState(initial?.name ?? "");
-  const [category, setCategory] = useState(initial?.category ?? "General");
+  const [category, setCategory] = useState(initial?.category ?? "");
   const [description, setDescription] = useState(initial?.description ?? "");
   const [priceCents, setPriceCents] = useState(initial ? String(initial.priceCents / 100) : "");
   const [currency, setCurrency] = useState(initial?.currency ?? "usd");
@@ -25,25 +26,26 @@ function AdminProductForm({ initial, saving, error, getToken, onCancel, onSubmit
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
+
   function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
     const dollars = Number.parseFloat(priceCents);
     if (Number.isNaN(dollars) || dollars <= 0) return;
 
-    const body: any = {
+    const body: Partial<Product> = {
       slug: slug.trim(),
       name: name.trim(),
       category: category.trim() || "General",
       description: description.trim(),
       priceCents: Math.round(dollars * 100),
       currency: currency.trim().toLowerCase(),
-      imageUrl: imageUrl.trim() || null,
+      imageUrl: imageUrl.trim(),
       imageKitFileId: imageKitFileId.trim() || null,
       active,
     };
 
     if (initial) {
-      const patch: any = {};
+      const patch: Partial<Product> = {};
       if (body.name !== initial.name) patch.name = body.name;
       if (body.category !== (initial.category ?? "General")) patch.category = body.category;
       if (body.description !== initial.description) patch.description = body.description;
