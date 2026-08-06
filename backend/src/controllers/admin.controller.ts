@@ -9,7 +9,7 @@ import { deleteImageFromImagekit } from "../lib/imagekit";
 const createProductSchema = z.object({
   name: z.string().min(1),
   slug: z.string().min(1),
-  category: z.string().min(1).default("General"),
+  category: z.string().min(1),
   description: z.string().min(1),
   priceCents: z.number().int().positive(),
   currency: z.string().min(1).default("usd"),
