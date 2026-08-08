@@ -70,12 +70,12 @@ export function useAdmin() {
     })
 
     return {
+        user,
         isModalOpen,
         setIsModalOpen,
         editing,
         setEditing,
         adminProducts,
-        isAdmin,
         isLoading,
         upsertProductMutation,
         deleteMutation,

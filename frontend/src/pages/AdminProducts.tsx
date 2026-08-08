@@ -10,11 +10,11 @@ import AdminProductForm from "../components/AdminProductForm";
 function AdminProducts() {
     const navigate = useNavigate()
     const {
+        user,
         isModalOpen,
         setIsModalOpen,
         editing,
         setEditing,
-        isAdmin,
         adminProducts,
         isLoading,
         upsertProductMutation,
@@ -22,7 +22,7 @@ function AdminProducts() {
         getToken
     } = useAdmin();
 
-    if (!isAdmin) {
+    if (user && user.role !== "admin") {
          navigate("/");
     }
 
