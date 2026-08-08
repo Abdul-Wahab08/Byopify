@@ -33,7 +33,7 @@ router.post("/create-token", async (req: Request, res: Response, next: NextFunct
         const displayName = [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") || clerkUser.username || null;
 
         const name = streamDisplayName(user.role, displayName, user.email)
-        const streamId = `clerk-${userId}`
+        const streamId = `clerk_${userId}`
 
         await streamServer.upsertUser({
             id: streamId,
