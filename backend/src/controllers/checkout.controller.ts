@@ -73,13 +73,13 @@ export async function checkoutController(req: Request, res: Response, next: Next
                 quantity: line.quantity,
                 unitPriceCents: p.priceCents,
             });
+        }
 
-            if (totalCents < 10) {
-                return res.status(400).json({
-                    data: null,
-                    message: "Total below Polar minimum (e.g. USD requires at least 10 cents)",
-                })
-            }
+        if (totalCents < 10) {
+            return res.status(400).json({
+                data: null,
+                message: "Total below Polar minimum (e.g. USD requires at least 10 cents)",
+            })
         }
 
         const [checkoutSession] = await db

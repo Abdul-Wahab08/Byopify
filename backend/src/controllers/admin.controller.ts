@@ -183,7 +183,7 @@ async function deleteAdminProducts(req: Request, res: Response, next: NextFuncti
       })
     }
 
-    deleteImageFromImagekit(isProductExist.imageKitFileId as string)
+    await deleteImageFromImagekit(isProductExist.imageKitFileId as string)
     await db
       .delete(products)
       .where(eq(products.id, productId))
