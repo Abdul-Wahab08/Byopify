@@ -7,7 +7,7 @@ import { IK_PRESETS, imageKitOptimizedUrl } from "../lib/imagekitUrl";
 import { useDispatch } from "react-redux";
 import EmptyCart from "../components/EmptyCart";
 import { Link } from "react-router";
-import { decreaseQuantity, increaseQuantity, removeItem } from "../store/slices/cartSlice";
+import { clearCart, decreaseQuantity, increaseQuantity, removeItem } from "../store/slices/cartSlice";
 
 function Cart() {
 
@@ -145,6 +145,8 @@ function Cart() {
                 </button>
               </SignInButton>
             </Show>
+
+            <button className="btn btn-outline btn-primary mt-4 w-full gap-2" onClick={() => dispatch(clearCart())}>Clear Cart</button>
 
             <p className="mt-4 flex items-start gap-2 text-xs text-base-content/60">
               <HeadphonesIcon className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden />
