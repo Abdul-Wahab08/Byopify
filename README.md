@@ -6,7 +6,7 @@ Byopify is a full-stack e-commerce platform for curated hardware and workspace p
 
 ## Features
 
-- **Product catalog** — Browse and filter products by category, view detailed product pages
+- **Product catalog** — Browse and filter products by category, view 7 product pages
 - **Shopping cart** — Add, update quantities, and remove items client-side
 - **Secure checkout** — Polar-hosted payments with webhook-based order fulfillment
 - **Order management** — View order history, line items, and payment status
@@ -107,7 +107,7 @@ Byopify/
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Abdul-Wahab08/Byopify
 cd Byopify
 ```
 
